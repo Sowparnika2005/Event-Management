@@ -1,6 +1,6 @@
-# 🚀 EventSphere — Event Management System  
+# 🚀 EventPro — Event Management System  
 
-![EventSphere Banner](https://via.placeholder.com/1200x600/7c3aed/ffffff?text=EventSphere+-+Event+Manager)
+![EventPro Banner](https://via.placeholder.com/1200x600/7c3aed/ffffff?text=EventSphere+-+Event+Manager)
 
 EventSphere is a basic event management web application that allows organizers to create and manage events through a simple interface. The system focuses on core functionality like event creation, updates, and viewing event details.
 
