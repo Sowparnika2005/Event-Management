@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <div class="card">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Sign In</button>
+        </form>
+        <div class="footer-link">
+            New here? <a href="StudentSignupForm.html">Create account</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const user = students.find(s => s.username === username && s.password === password);
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = 'ViewEvents.html';
+            } else {
+                alert('Invalid username or password!');
+            }
+        });
+    </script>
+</body>
+</html>

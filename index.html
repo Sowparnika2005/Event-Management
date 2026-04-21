@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventPro | Management Portal</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <div class="card" style="height: 550px; width: 500px; margin: 0 auto; text-align: center; align-items: center; display: flex; flex-direction: column; justify-content: center;">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: -1px;">EventPro</h1>
+        <p style="color: #b7c0cc; margin-bottom: 2rem;">Select an access portal to continue</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <a href="/StudentLogin.html" style="text-decoration: none;">
+                <div style="border: 1px solid #e2e8f0; height:auto; width:auto; padding: 1.5rem; border-radius: 8px; transition: 0.2s;" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='#e2e8f0'">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎓</div>
+                    <div style="font-weight: 600; color: #a5b2c7;">Student</div>
+                </div>
+            </a>
+            
+            <a href="/AdminLogin.html" style="text-decoration: none;">
+                <div style="border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 8px; transition: 0.2s;" onmouseover="this.style.borderColor='#1e293b'" onmouseout="this.style.borderColor='#e2e8f0'">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔑</div>
+                    <div style="font-weight: 600; color: #a5b2c7;">Admin</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="footer-link" style="margin-top: 2rem;">
+            New to the platform? <a href="/StudentSignupForm.html">Create Student Account</a>
+        </div>
+    </div>
+</body>
+</html>

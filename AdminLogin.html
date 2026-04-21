@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Management</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="admin-note">
+            <span>Administrative Access</span>
+        </div>
+        <h2>Admin Login</h2>
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label>Admin ID</label>
+                <input type="text" id="adminID" placeholder="Enter Admin ID" required>
+            </div>
+            <div class="form-group">
+                <label>Security Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="button-primary">Authorize Login</button>
+        </form>
+        <div class="footer-link">
+            Not an admin? <a href="AdminSignup.html">Create account</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const adminID = document.getElementById('adminID').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const admins = JSON.parse(localStorage.getItem('admins')) || [];
+            const admin = admins.find(a => a.adminID === adminID && a.password === password);
+
+            if (admin) {
+                localStorage.setItem('currentAdmin', adminID);
+                window.location.href = 'CommiteeDashboard.html';
+            } else {
+                alert('Invalid admin credentials. Please sign up if you do not have an account.');
+            }
+        });
+    </script>
+</body>
+</html>

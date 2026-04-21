@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Events</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body class="view-events-body">
+  <div class="view-events-container">
+    <h1>Upcoming College Events</h1>
+    <p id="welcomeText" class="welcome-text"></p>
+
+    <div class="schedule-table-wrapper">
+      <table class="schedule-table" id="eventList">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Venue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Events will be loaded here -->
+        </tbody>
+      </table>
+      <p id="emptySchedule" class="empty-state" style="display:none;">No events available.</p>
+    </div>
+
+    <div class="btn-group">
+      <a href="StudentLogin.html" class="btn">Back to Login</a>
+      <a href="index.html" class="btn">Home</a>
+    </div>
+
+  </div>
+
+  <script>
+    function displayEvents() {
+      const eventList = document.getElementById('eventList').querySelector('tbody');
+      const emptySchedule = document.getElementById('emptySchedule');
+      eventList.innerHTML = '';
+      const events = JSON.parse(localStorage.getItem('events')) || [];
+
+      if (events.length === 0) {
+        emptySchedule.style.display = 'block';
+        document.getElementById('eventList').style.display = 'none';
+        return;
+      }
+
+      emptySchedule.style.display = 'none';
+      document.getElementById('eventList').style.display = 'table';
+
+      events.forEach(event => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${event.name}</td>
+          <td>${event.date}</td>
+          <td>${event.time}</td>
+          <td>${event.venue}</td>
+        `;
+        eventList.appendChild(row);
+      });
+    }
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+      alert('Please log in as a student to view events.');
+      window.location.href = 'StudentLogin.html';
+    } else {
+      document.getElementById('welcomeText').textContent = `Welcome, ${currentUser.username}!`;
+    }
+
+    displayEvents();
+    window.addEventListener('storage', displayEvents);
+  </script>
+</body>
+</html>

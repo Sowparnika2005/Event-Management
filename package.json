@@ -1,0 +1,17 @@
+{
+  "name": "wp-project",
+  "version": "1.0.0",
+  "description": "Event management project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "oracledb": "^6.8.0"
+  }
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Committee Dashboard</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+
+<body class="dashboard-body">
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <a href="index.html">Home</a>
+  <a href="ViewEvents.html">View Events</a>
+  <a href="#" onclick="logoutAdmin(event)">Logout</a>
+</div>
+
+<h2>Committee Dashboard - Add & Manage Events</h2>
+
+<form id="eventForm" class="dashboard-form">
+  <label>Event Name</label>
+  <input type="text" id="eventName" placeholder="Enter event name" required>
+
+  <label>Select Date</label>
+  <input type="date" id="eventDate" required>
+
+  <label>Select Time</label>
+  <input type="time" id="eventTime" required>
+
+  <label>Venue</label>
+  <input type="text" id="eventVenue" placeholder="Enter venue" required>
+
+  <label>Image URL</label>
+  <input type="url" id="eventImage" placeholder="Optional">
+
+  <button type="submit" class="button-primary" id="saveButton">Add Event</button>
+  <button type="button" class="button-secondary" id="cancelEditButton" style="display:none;">Cancel Edit</button>
+</form>
+
+<h3 class="section-title">Event Schedule</h3>
+<div class="container" id="cardContainer"></div>
+
+<script>
+  const form = document.getElementById('eventForm');
+  const cardContainer = document.getElementById('cardContainer');
+  const saveButton = document.getElementById('saveButton');
+  const cancelEditButton = document.getElementById('cancelEditButton');
+  let editingIndex = -1;
+
+  const currentAdmin = localStorage.getItem('currentAdmin');
+  if (!currentAdmin) {
+    alert('Please log in as admin to access the dashboard.');
+    window.location.href = 'AdminLogin.html';
+  }
+
+  function renderEmptyState() {
+    cardContainer.innerHTML = '<p class="empty-state">No events have been added yet.</p>';
+  }
+
+  function displayEvents() {
+    const events = JSON.parse(localStorage.getItem('events')) || [];
+    cardContainer.innerHTML = '';
+
+    if (events.length === 0) {
+      renderEmptyState();
+      return;
+    }
+
+    events.forEach((event, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${event.image}">
+        <div class="card-header">${event.name}</div>
+        <div class="card-details">
+          <p><b>Date:</b> ${event.date}</p>
+          <p><b>Time:</b> ${event.time}</p>
+          <p><b>Venue:</b> ${event.venue}</p>
+          <div class="btn-group">
+            <button class="button-secondary" onclick="startEdit(${index}); event.stopPropagation();">Edit</button>
+            <button class="delete-btn" onclick="deleteEvent(${index}); event.stopPropagation();">Delete</button>
+          </div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        card.querySelector('.card-details').classList.toggle('show');
+      });
+      cardContainer.appendChild(card);
+    });
+  }
+
+  function resetForm() {
+    form.reset();
+    editingIndex = -1;
+    saveButton.textContent = 'Add Event';
+    cancelEditButton.style.display = 'none';
+  }
+
+  function startEdit(index) {
+    const events = JSON.parse(localStorage.getItem('events')) || [];
+    const event = events[index];
+    if (!event) return;
+
+    document.getElementById('eventName').value = event.name;
+    document.getElementById('eventDate').value = event.date;
+    document.getElementById('eventTime').value = event.time;
+    document.getElementById('eventVenue').value = event.venue;
+    document.getElementById('eventImage').value = event.image !== 'https://via.placeholder.com/260x170' ? event.image : '';
+
+    editingIndex = index;
+    saveButton.textContent = 'Update Event';
+    cancelEditButton.style.display = 'inline-block';
+  }
+
+  cancelEditButton.addEventListener('click', () => {
+    resetForm();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const eventData = {
+      name: document.getElementById('eventName').value,
+      date: document.getElementById('eventDate').value,
+      time: document.getElementById('eventTime').value,
+      venue: document.getElementById('eventVenue').value,
+      image: document.getElementById('eventImage').value || 'https://via.placeholder.com/260x170'
+    };
+
+    const events = JSON.parse(localStorage.getItem('events')) || [];
+    if (editingIndex >= 0) {
+      events[editingIndex] = eventData;
+      localStorage.setItem('events', JSON.stringify(events));
+      alert('Event updated successfully!');
+    } else {
+      events.push(eventData);
+      localStorage.setItem('events', JSON.stringify(events));
+      alert('Event added successfully!');
+    }
+
+    resetForm();
+    displayEvents();
+  });
+
+  function deleteEvent(index) {
+    const events = JSON.parse(localStorage.getItem('events')) || [];
+    events.splice(index, 1);
+    localStorage.setItem('events', JSON.stringify(events));
+    displayEvents();
+  }
+
+  function logoutAdmin(event) {
+    event.preventDefault();
+    localStorage.removeItem('currentAdmin');
+    window.location.href = 'AdminLogin.html';
+  }
+
+  window.logoutAdmin = logoutAdmin;
+  window.deleteEvent = deleteEvent;
+  window.startEdit = startEdit;
+
+  displayEvents();
+</script>
+
+</body>
+</html>
